@@ -21,9 +21,9 @@ router.get('/progress/events', async (req, res) => {
   try {
     const { discipline, match_status, source_type } = req.query;
     const filter = {};
-    if (discipline && discipline !== 'ALL') filter.discipline = discipline;
-    if (match_status && match_status !== 'ALL') filter.match_status = match_status;
-    if (source_type && source_type !== 'ALL') filter.source_type = source_type;
+    if (discipline && discipline !== 'ALL' && discipline !== 'undefined') filter.discipline = discipline;
+    if (match_status && match_status !== 'ALL' && match_status !== 'undefined') filter.match_status = match_status;
+    if (source_type && source_type !== 'ALL' && source_type !== 'undefined') filter.source_type = source_type;
 
     const events = await ProgressEvent.find(filter)
       .populate('source_document_id')

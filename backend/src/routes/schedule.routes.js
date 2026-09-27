@@ -18,10 +18,10 @@ router.get('/schedule', async (req, res) => {
   try {
     const { discipline, wbs_level, status, search } = req.query;
     const filter = {};
-    if (discipline && discipline !== 'ALL') filter.discipline = discipline;
-    if (wbs_level && wbs_level !== 'ALL') filter.wbs_level = wbs_level;
-    if (status && status !== 'ALL') filter.status = status;
-    if (search) {
+    if (discipline && discipline !== 'ALL' && discipline !== 'undefined') filter.discipline = discipline;
+    if (wbs_level && wbs_level !== 'ALL' && wbs_level !== 'undefined') filter.wbs_level = wbs_level;
+    if (status && status !== 'ALL' && status !== 'undefined') filter.status = status;
+    if (search && search !== 'undefined' && search.trim() !== '') {
       filter.$or = [
         { activity_id: new RegExp(search, 'i') },
         { activity_name: new RegExp(search, 'i') },

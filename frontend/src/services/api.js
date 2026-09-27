@@ -1,5 +1,16 @@
 const API_BASE = '/api';
 
+function buildQuery(params = {}) {
+  const clean = {};
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== null && v !== '' && v !== 'undefined') {
+      clean[k] = v;
+    }
+  }
+  const q = new URLSearchParams(clean).toString();
+  return q ? `?${q}` : '';
+}
+
 export const api = {
   // Auth
   async login(email, password) {
@@ -24,8 +35,7 @@ export const api = {
 
   // Schedule
   async getSchedule(params = {}) {
-    const query = new URLSearchParams(params).toString();
-    const res = await fetch(`${API_BASE}/schedule?${query}`);
+    const res = await fetch(`${API_BASE}/schedule${buildQuery(params)}`);
     return res.json();
   },
 
@@ -61,8 +71,7 @@ export const api = {
 
   // Progress Events
   async getProgressEvents(params = {}) {
-    const query = new URLSearchParams(params).toString();
-    const res = await fetch(`${API_BASE}/progress/events?${query}`);
+    const res = await fetch(`${API_BASE}/progress/events${buildQuery(params)}`);
     return res.json();
   },
 
@@ -77,8 +86,7 @@ export const api = {
 
   // Matches
   async getMatches(params = {}) {
-    const query = new URLSearchParams(params).toString();
-    const res = await fetch(`${API_BASE}/matches?${query}`);
+    const res = await fetch(`${API_BASE}/matches${buildQuery(params)}`);
     return res.json();
   },
 
@@ -131,22 +139,19 @@ export const api = {
 
   // Analytics & Delay
   async getDelayAnalytics(params = {}) {
-    const query = new URLSearchParams(params).toString();
-    const res = await fetch(`${API_BASE}/analytics/delays?${query}`);
+    const res = await fetch(`${API_BASE}/analytics/delays${buildQuery(params)}`);
     return res.json();
   },
 
   // Project Memory
   async getProjectMemory(params = {}) {
-    const query = new URLSearchParams(params).toString();
-    const res = await fetch(`${API_BASE}/project-memory?${query}`);
+    const res = await fetch(`${API_BASE}/project-memory${buildQuery(params)}`);
     return res.json();
   },
 
   // Audit
   async getAuditLogs(params = {}) {
-    const query = new URLSearchParams(params).toString();
-    const res = await fetch(`${API_BASE}/audit?${query}`);
+    const res = await fetch(`${API_BASE}/audit${buildQuery(params)}`);
     return res.json();
   },
 

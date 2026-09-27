@@ -9,8 +9,8 @@ router.get('/analytics/delays', async (req, res) => {
   try {
     const { discipline, cause } = req.query;
     const filter = {};
-    if (discipline && discipline !== 'ALL') filter.discipline = discipline;
-    if (cause && cause !== 'ALL') filter.possible_cause = cause;
+    if (discipline && discipline !== 'ALL' && discipline !== 'undefined') filter.discipline = discipline;
+    if (cause && cause !== 'ALL' && cause !== 'undefined') filter.possible_cause = cause;
 
     const delayRecords = await DelayRecord.find(filter).sort({ delay_days: -1 });
 
@@ -65,8 +65,8 @@ router.get('/project-memory', async (req, res) => {
   try {
     const { q, discipline } = req.query;
     const filter = {};
-    if (discipline && discipline !== 'ALL') filter.discipline = discipline;
-    if (q) {
+    if (discipline && discipline !== 'ALL' && discipline !== 'undefined') filter.discipline = discipline;
+    if (q && q !== 'undefined' && q.trim() !== '') {
       filter.$or = [
         { activity_keyword: new RegExp(q, 'i') },
         { recurring_bottleneck: new RegExp(q, 'i') },

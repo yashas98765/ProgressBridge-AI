@@ -22,9 +22,9 @@ router.get('/matches', async (req, res) => {
   try {
     const { status, review_status, discipline } = req.query;
     const filter = {};
-    if (status && status !== 'ALL') filter.status = status;
-    if (review_status && review_status !== 'ALL') filter.review_status = review_status;
-    if (discipline && discipline !== 'ALL') filter.discipline = discipline;
+    if (status && status !== 'ALL' && status !== 'undefined') filter.status = status;
+    if (review_status && review_status !== 'ALL' && review_status !== 'undefined') filter.review_status = review_status;
+    if (discipline && discipline !== 'ALL' && discipline !== 'undefined') filter.discipline = discipline;
 
     const matches = await Match.find(filter)
       .populate('event_id')

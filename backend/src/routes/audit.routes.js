@@ -7,10 +7,10 @@ router.get('/audit', async (req, res) => {
   try {
     const { action, user, activity_id, search } = req.query;
     const filter = {};
-    if (action && action !== 'ALL') filter.action = action;
-    if (user && user !== 'ALL') filter.user = new RegExp(user, 'i');
-    if (activity_id) filter.activity_id = new RegExp(activity_id, 'i');
-    if (search) {
+    if (action && action !== 'ALL' && action !== 'undefined') filter.action = action;
+    if (user && user !== 'ALL' && user !== 'undefined') filter.user = new RegExp(user, 'i');
+    if (activity_id && activity_id !== 'undefined') filter.activity_id = new RegExp(activity_id, 'i');
+    if (search && search !== 'undefined' && search.trim() !== '') {
       filter.$or = [
         { details: new RegExp(search, 'i') },
         { activity_id: new RegExp(search, 'i') },
