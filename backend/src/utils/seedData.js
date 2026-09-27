@@ -13,7 +13,7 @@ import { ProjectMemory } from '../models/ProjectMemory.js';
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/progressbridge';
+const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/progressbridge';
 
 export async function seedDatabase() {
   try {
