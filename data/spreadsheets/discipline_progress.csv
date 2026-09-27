@@ -1,0 +1,6 @@
+Date,Discipline,Activity Description,Activity ID,Start Time,End Time,Supervisor,Status
+2026-09-23,Piping,Spool erected on Line 24,L6-PIP-024,2026-09-23 09:30,2026-09-25 16:45,Ravi Kumar,Completed
+2026-09-24,Electrical,Cable tray laying Substation 2,L6-ELE-012,2026-09-24 08:00,,M. Bordoloi,In Progress
+2026-09-22,Civil,Excavation and rebar binding for Compressor C-201,,2026-08-15 08:00,2026-08-26 17:00,K. Saikia,Completed
+2026-09-20,Instrumentation,Pressure transmitter PT-104 calibration and mounting,L6-INS-008,2026-09-18 09:00,2026-09-21 17:00,R. Barman,Completed
+2026-09-25,Piping,Fit-up and field butt welding for Line 24,L6-PIP-025,2026-09-25 09:00,,Ravi Kumar,In Progress

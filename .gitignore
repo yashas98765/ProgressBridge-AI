@@ -1,0 +1,7 @@
+node_modules/
+ai-venv/
+dist/
+.env
+uploads/
+*.log
+.DS_Store

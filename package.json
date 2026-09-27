@@ -1,0 +1,20 @@
+{
+  "name": "progressbridge-ai-root",
+  "version": "1.0.0",
+  "description": "ProgressBridge AI - Planning-to-Execution Bridge for Infrastructure Projects (SIH26122)",
+  "scripts": {
+    "seed": "npm run seed --prefix backend",
+    "backend": "npm start --prefix backend",
+    "frontend": "npm run dev --prefix frontend",
+    "build:frontend": "npm run build --prefix frontend"
+  },
+  "keywords": [
+    "sih2026",
+    "infrastructure",
+    "schedule-linking",
+    "ai-matching",
+    "primavera",
+    "ms-project"
+  ],
+  "author": "SIH26122 Solution Team"
+}
