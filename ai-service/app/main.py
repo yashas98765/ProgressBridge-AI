@@ -47,11 +47,8 @@ class TimeAgentRequest(BaseModel):
 @app.get("/health")
 def health_check():
     return {
-        "status": "healthy",
-        "service": "ProgressBridge AI Engine",
-        "version": "1.0.0",
-        "model": "TF-IDF N-Gram Vectorizer + Levenshtein Cosine Semantic Hybrid",
-        "author": "SIH26122 Solution Team"
+        "status": "ok",
+        "service": "ProgressBridge AI"
     }
 
 @app.post("/api/ai/match")

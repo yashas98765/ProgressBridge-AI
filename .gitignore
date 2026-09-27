@@ -1,7 +1,43 @@
+# Dependencies
 node_modules/
 ai-venv/
+.venv/
+venv/
+env/
+
+# Production build outputs
 dist/
+build/
+*.local
+
+# Environment variables & secrets
 .env
-uploads/
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+ai-service/.env
+ai-service/.env.*
+!ai-service/.env.example
+
+# Python runtime caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Uploaded site documents & logs
+uploads/*
+!uploads/.gitkeep
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Operating System files
 .DS_Store
+Thumbs.db

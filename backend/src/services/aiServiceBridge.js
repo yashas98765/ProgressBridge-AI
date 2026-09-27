@@ -225,5 +225,14 @@ export const AIServiceBridge = {
         suggestion: match
       };
     }
+  },
+
+  async checkHealth() {
+    try {
+      const res = await axios.get(`${AI_SERVICE_URL}/health`, { timeout: 2500 });
+      return res.status === 200;
+    } catch (e) {
+      return false;
+    }
   }
 };

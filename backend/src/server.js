@@ -23,23 +23,58 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/progressbridge';
+const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/progressbridge';
 
-app.use(cors());
+// Production CORS Configuration
+const allowedOrigins = process.env.CORS_ORIGIN 
+  ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
+  : ['*'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    // Allow standard local development origins
+    if (/^https?:\/\/localhost(:\d+)?$/.test(origin) || /^https?:\/\/127\.0\.0\.1(:\d+)?$/.test(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true
+}));
+
 app.use(express.json({ limit: '25mb' }));
 app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // Static uploads directory
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
-// Health check
+// Production Health check: GET /health
 app.get('/health', (req, res) => {
   res.json({
-    status: 'healthy',
-    service: 'ProgressBridge AI Backend',
-    version: '1.0.0',
-    mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    timestamp: new Date()
+    status: 'ok',
+    service: 'ProgressBridge Backend'
+  });
+});
+
+// Detailed API Health Check: GET /api/health
+app.get('/api/health', async (req, res) => {
+  let aiStatus = 'unreachable';
+  try {
+    const isAiUp = await AIServiceBridge.checkHealth();
+    aiStatus = isAiUp ? 'connected' : 'fallback_internal_engine';
+  } catch (e) {
+    aiStatus = 'fallback_internal_engine';
+  }
+
+  res.json({
+    status: 'ok',
+    service: 'ProgressBridge Backend',
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    ai_service: aiStatus,
+    timestamp: new Date().toISOString()
   });
 });
 

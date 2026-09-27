@@ -1,4 +1,5 @@
-const API_BASE = '/api';
+const RAW_BACKEND = import.meta.env.VITE_API_URL || '';
+const API_BASE = RAW_BACKEND ? `${RAW_BACKEND.replace(/\/$/, '')}/api` : '/api';
 
 function buildQuery(params = {}) {
   const clean = {};

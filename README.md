@@ -273,6 +273,46 @@ Open your browser to: **`http://localhost:3000`**
 
 ---
 
+## 🚀 Production Deployment & Live URLs
+
+The application is architected for low-cost, production-grade cloud hosting:
+
+| Component | Target Platform | Production URL | Runtime | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Frontend** | Vercel | `https://progressbridge-ai.vercel.app` | React 19 + Vite 6 | Ready / Deployed |
+| **Backend API** | Render | `https://progressbridge-api.onrender.com` | Node.js 22 + Express | Ready / Deployed |
+| **AI Microservice** | Render | `https://progressbridge-ai.onrender.com` | Python 3.13 + FastAPI | Ready / Deployed |
+| **Database** | MongoDB Atlas | Managed M0 Cloud Cluster | MongoDB 7.0+ | Active / Seeded |
+
+> [!NOTE]
+> For complete step-by-step instructions on provisioning MongoDB Atlas, configuring Vercel SPA rewrites, and using Render blueprints, refer to [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+---
+
+## ⚙️ Environment Variables Documentation
+
+### 1. Frontend (`frontend/.env` / Vercel Environment Settings):
+| Variable | Required | Example | Description |
+| :--- | :--- | :--- | :--- |
+| `VITE_API_URL` | Production only | `https://progressbridge-api.onrender.com` | Public URL of the backend API. When empty, Vite proxies to `http://localhost:5000`. |
+
+### 2. Backend API (`backend/.env` / Render Environment Settings):
+| Variable | Required | Example | Description |
+| :--- | :--- | :--- | :--- |
+| `PORT` | Yes | `5000` | Port for the Node.js Express server. |
+| `MONGODB_URI` | Yes | `mongodb+srv://user:pass@cluster.mongodb.net/pb` | MongoDB Atlas cloud connection string. |
+| `JWT_SECRET` | Yes | `pb_secret_jwt_key_sih2026_prod` | Secret for signing role-based session JWT tokens. |
+| `AI_SERVICE_URL` | Yes | `https://progressbridge-ai.onrender.com` | Public URL of the Python FastAPI microservice. |
+| `CORS_ORIGIN` | Yes | `https://progressbridge-ai.vercel.app` | Restricts CORS to the deployed frontend domain in production. |
+
+### 3. AI Microservice (`ai-service/.env` / Render Environment Settings):
+| Variable | Required | Example | Description |
+| :--- | :--- | :--- | :--- |
+| `PORT` | Yes | `8000` | Port for the Uvicorn FastAPI server. |
+| `MODEL_NAME` | Optional | `all-MiniLM-L6-v2` | Sentence Transformer / semantic embedding model. |
+
+---
+
 ## 👥 Demo Personas & Credentials
 
 All demo accounts use the standard password: **`progress123`**
