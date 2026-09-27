@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"npm run backend\" \"npm run frontend\"",
     "dev:all": "concurrently -n \"ai,backend,frontend\" -c \"magenta,blue,green\" \"npm run ai\" \"npm run backend\" \"npm run frontend\"",
-    "start": "npm run dev",
+    "start": "npm start --prefix backend",
     "backend": "npm start --prefix backend",
     "frontend": "npm run dev --prefix frontend",
     "ai": "ai-venv\\Scripts\\python.exe -m uvicorn app.main:app --app-dir ai-service --port 8000",
