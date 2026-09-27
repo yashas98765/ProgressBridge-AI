@@ -4,6 +4,7 @@ import { AppProvider } from './context/AppContext';
 import { MainLayout } from './layouts/MainLayout';
 
 // Pages
+import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { DataIngestionPage } from './pages/DataIngestionPage';
 import { SchedulePage } from './pages/SchedulePage';
@@ -21,6 +22,7 @@ export default function App() {
     <AppProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<MainLayout />}>
             <Route index element={<DashboardPage />} />
             <Route path="ingestion" element={<DataIngestionPage />} />
