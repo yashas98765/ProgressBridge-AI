@@ -14,7 +14,10 @@ const auditLogSchema = new mongoose.Schema({
       'MATCH_REJECTED', 
       'MATCH_MODIFIED',
       'SCHEDULE_UPDATED', 
-      'ACTIVITY_CREATED'
+      'ACTIVITY_CREATED',
+      'TIME_AGENT_INPUT',
+      'DELAY_FLAGGED',
+      'AUDIT_INTEGRITY_VERIFIED'
     ],
     required: true 
   },
