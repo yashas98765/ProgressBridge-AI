@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp, DEMO_USERS } from '../context/AppContext';
-import { 
-  Activity, Lock, Mail, ArrowRight, Sparkles, 
-  ShieldCheck, RefreshCw, CheckCircle2, User, KeyRound 
+import {
+  Activity, Lock, Mail, ArrowRight, Sparkles,
+  ShieldCheck, RefreshCw, CheckCircle2, User, KeyRound
 } from 'lucide-react';
 
 export function LoginPage() {
@@ -25,7 +25,8 @@ export function LoginPage() {
     const res = await login(email, password);
     setLoading(false);
     if (res.success) {
-      navigate('/');
+      const userObj = DEMO_USERS.find(u => u.email === email);
+      navigate(userObj?.defaultRoute || '/');
     }
   };
 
@@ -36,7 +37,7 @@ export function LoginPage() {
     const res = await login(user.email, 'progress123');
     setLoading(false);
     if (res.success) {
-      navigate('/');
+      navigate(user.defaultRoute || '/');
     }
   };
 
@@ -53,62 +54,125 @@ export function LoginPage() {
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Brand Header */}
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-linear-to-tr from-blue-600 to-indigo-500 text-white shadow-xl shadow-blue-500/20 mb-4">
+      <div className="sm:mx-auto sm:w-full sm:max-w-2xl text-center relative z-10 px-4">
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-linear-to-tr from-blue-600 to-indigo-500 text-white shadow-xl shadow-blue-500/20 mb-3">
           <Activity className="w-8 h-8" />
         </div>
-        <div className="flex items-center justify-center gap-2 mb-1">
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">ProgressBridge</h1>
-          <span className="px-2 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-300 border border-blue-400/30 uppercase">
-            AI
+        
+        <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-1">
+          ProgressBridge <span className="text-blue-400">AI</span>
+        </h1>
+        
+        <p className="text-sm sm:text-base font-semibold text-blue-200 tracking-wide uppercase mb-2">
+          "From Site Execution to Schedule Intelligence."
+        </p>
+
+        <p className="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto leading-relaxed">
+          AI-powered planning-to-execution bridge for infrastructure project progress tracking.
+        </p>
+
+        <div className="mt-3 flex items-center justify-center gap-3">
+          <span className="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/5 border border-white/10 text-slate-300">
+            SIH 2026 Problem Statement: <strong className="text-blue-400">SIH26122</strong>
+          </span>
+          <span className="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 border border-emerald-400/30 text-emerald-300">
+            Oil India Limited
           </span>
         </div>
-        <p className="text-xs text-slate-400 max-w-sm mx-auto">
-          AI-Powered Planning-to-Execution Bridge for Infrastructure Projects
-        </p>
-        <div className="mt-2 inline-block px-3 py-1 rounded-full text-[11px] font-semibold bg-white/5 border border-white/10 text-slate-300">
-          SIH2026 Problem Statement ID: <strong className="text-blue-400">SIH26122</strong>
+
+        {/* Primary Launch Demo CTA */}
+        <div className="mt-5 max-w-xs mx-auto">
+          <button
+            type="button"
+            onClick={() => handleQuickSeedAndLogin(DEMO_USERS[0])}
+            className="w-full py-3.5 px-6 rounded-2xl bg-linear-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold text-sm shadow-xl shadow-blue-600/30 flex items-center justify-center gap-2.5 transition-all cursor-pointer transform hover:-translate-y-0.5 active:scale-[0.98]"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
+            Launch Demo
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* 3 Mandatory Feature Cards: Capture, Link, Learn */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 text-left">
+          <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
+            <div className="flex items-center gap-2 text-blue-400 font-bold text-xs mb-1">
+              <span className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center text-[11px]">1</span>
+              <span>Capture</span>
+            </div>
+            <p className="text-[11px] text-slate-300 leading-snug">
+              Convert reports, spreadsheets and site updates into structured progress events.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
+            <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs mb-1">
+              <span className="w-5 h-5 rounded-full bg-indigo-500/20 flex items-center justify-center text-[11px]">2</span>
+              <span>Link</span>
+            </div>
+            <p className="text-[11px] text-slate-300 leading-snug">
+              AI-assisted matching connects field descriptions to L5/L6 schedule activities.
+            </p>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
+            <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs mb-1">
+              <span className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-[11px]">3</span>
+              <span>Learn</span>
+            </div>
+            <p className="text-[11px] text-slate-300 leading-snug">
+              Build institutional memory from real execution patterns.
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Main Container */}
-      <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-xl relative z-10 px-4 sm:px-0">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl relative z-10 px-4 sm:px-0">
         <div className="bg-white/95 backdrop-blur-md py-8 px-6 shadow-2xl rounded-3xl border border-slate-200/80 sm:px-10">
-          
+
           {/* Quick Seed Credentials Card Banner */}
           <div className="mb-6 p-4 bg-linear-to-r from-blue-50 via-indigo-50 to-blue-50 rounded-2xl border border-blue-200">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-1.5 text-blue-900 font-bold text-xs">
                 <Sparkles className="w-4 h-4 text-amber-500" />
-                <span>Seeded Demo Personas (1-Click Auto-Fill & Login)</span>
+                <span>Choose Demo Persona (Distinct Role & Workspace)</span>
               </div>
               <span className="text-[10px] text-blue-600 font-semibold bg-blue-100/80 px-2 py-0.5 rounded-full">
-                SIH Jury Quick-Access
+                SIH Jury RBAC Demo
               </span>
             </div>
 
             <p className="text-[11px] text-slate-600 mb-3">
-              Click any role below to automatically seed credentials and log in instantly:
+              Each persona opens a distinct workspace tailored to their role in the planning-to-execution workflow:
             </p>
 
             {/* Persona Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {DEMO_USERS.map((user) => (
                 <button
                   key={user.email}
                   type="button"
                   onClick={() => handleQuickSeedAndLogin(user)}
-                  className="p-2.5 bg-white hover:bg-blue-600 hover:text-white border border-slate-200 hover:border-blue-600 rounded-xl text-left transition-all group flex flex-col justify-between shadow-2xs cursor-pointer"
+                  className="p-3 bg-white hover:bg-blue-600 hover:text-white border border-slate-200 hover:border-blue-600 rounded-xl text-left transition-all group flex flex-col justify-between shadow-2xs cursor-pointer"
                 >
                   <div className="flex items-center justify-between w-full">
-                    <span className="font-bold text-xs text-slate-800 group-hover:text-white">
-                      {user.name.split(' ')[0]} ({user.role})
+                    <span className="font-bold text-xs text-slate-900 group-hover:text-white">
+                      {user.name}
+                    </span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded border bg-slate-50 text-slate-700 group-hover:bg-blue-500 group-hover:text-white group-hover:border-blue-400">
+                      {user.role}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-slate-500 group-hover:text-blue-100 mt-0.5 truncate">
+                    {user.department}
+                  </span>
+                  <div className="mt-2 pt-1.5 border-t border-slate-100 group-hover:border-blue-500 flex items-center justify-between text-[10px]">
+                    <span className="font-semibold text-blue-600 group-hover:text-amber-200">
+                      ➜ {user.landingName}
                     </span>
                     <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
                   </div>
-                  <span className="text-[10px] text-slate-400 group-hover:text-blue-100 font-mono mt-0.5 truncate">
-                    {user.email}
-                  </span>
                 </button>
               ))}
             </div>

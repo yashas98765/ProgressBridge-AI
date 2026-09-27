@@ -9,28 +9,52 @@ export const DEMO_USERS = [
     email: 'planner@progressbridge.demo',
     role: 'PLANNER',
     title: 'Lead Planning Engineer',
-    department: 'Planning & Scheduling'
+    department: 'Planning & Scheduling',
+    defaultRoute: '/match-review',
+    landingName: 'AI Match Review Desk',
+    allowedNavs: ['/', '/match-review', '/schedule-updates', '/schedule', '/ingestion', '/events', '/audit'],
+    permissions: 'Review AI matches, approve/reject schedule linkages, commit actuals to Primavera, view audit trail',
+    roleDescription: 'Planner View: Authorized to review and approve schedule linkages',
+    color: 'blue'
   },
   {
     name: 'Ravi Kumar',
     email: 'supervisor@progressbridge.demo',
     role: 'SUPERVISOR',
     title: 'Site Execution In-Charge',
-    department: 'Site Execution (Piping & Mechanical)'
+    department: 'Site Execution (Piping & Mechanical)',
+    defaultRoute: '/time-agent',
+    landingName: 'Field Time Agent Copilot',
+    allowedNavs: ['/time-agent', '/ingestion', '/events', '/schedule'],
+    permissions: 'Submit activity updates, natural language Time Agent voice/text logging, view site logs',
+    roleDescription: 'Supervisor View: Focused on Time Agent & field data capture',
+    color: 'emerald'
   },
   {
     name: 'Vikramjit Gogoi',
     email: 'manager@progressbridge.demo',
     role: 'PROJECT_MANAGER',
     title: 'Project Manager',
-    department: 'Executive Operations'
+    department: 'Executive Operations',
+    defaultRoute: '/analytics',
+    landingName: 'Executive Delay Analytics',
+    allowedNavs: ['/', '/analytics', '/project-memory', '/schedule', '/schedule-updates', '/audit'],
+    permissions: 'Executive PMIS S-Curves, variance tracking, Delay Analytics & Institutional Memory',
+    roleDescription: 'Project Manager View: Focused on KPIs, delays & project memory',
+    color: 'purple'
   },
   {
     name: 'Amitabh Sen',
     email: 'admin@progressbridge.demo',
     role: 'ADMIN',
     title: 'PMO Administrator',
-    department: 'Project Management Office'
+    department: 'Project Management Office',
+    defaultRoute: '/',
+    landingName: 'PMO Command Center',
+    allowedNavs: ['/', '/ingestion', '/schedule', '/events', '/match-review', '/time-agent', '/schedule-updates', '/analytics', '/project-memory', '/audit', '/settings'],
+    permissions: 'Full system oversight, confidence threshold configuration & user administration',
+    roleDescription: 'Admin View: Unrestricted access across all 11 modules',
+    color: 'indigo'
   }
 ];
 
@@ -38,7 +62,12 @@ export function AppProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('progressbridge_user');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+      try { 
+        const parsed = JSON.parse(saved);
+        // Find matching full demo user object
+        const matched = DEMO_USERS.find(u => u.email === parsed.email);
+        if (matched) return matched;
+      } catch (e) { /* ignore */ }
     }
     return DEMO_USERS[0]; // default Planner
   });
@@ -70,13 +99,22 @@ export function AppProvider({ children }) {
     }, 4500);
   };
 
+  const switchPersona = (user) => {
+    setCurrentUser(user);
+    showNotification(`Switched active persona to ${user.name} (${user.role})`, 'info');
+  };
+
   const login = async (email, password) => {
     try {
       const res = await api.login(email, password);
       if (res.success) {
         setToken(res.token);
-        setCurrentUser(res.user);
-        showNotification(`Welcome back, ${res.user.name}! (${res.user.role})`, 'success');
+        const matchedUser = DEMO_USERS.find(u => u.email === res.user.email) || {
+          ...res.user,
+          allowedNavs: ['/', '/ingestion', '/schedule', '/events', '/match-review', '/time-agent', '/schedule-updates', '/analytics', '/project-memory', '/audit', '/settings']
+        };
+        setCurrentUser(matchedUser);
+        showNotification(`Welcome back, ${matchedUser.name}! (${matchedUser.role})`, 'success');
         return { success: true };
       } else {
         showNotification(res.error || 'Login failed', 'error');
@@ -112,6 +150,7 @@ export function AppProvider({ children }) {
       value={{
         currentUser,
         setCurrentUser,
+        switchPersona,
         token,
         login,
         logout,

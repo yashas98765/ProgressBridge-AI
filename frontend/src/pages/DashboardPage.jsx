@@ -4,7 +4,8 @@ import { useApp } from '../context/AppContext';
 import { 
   CheckCircle2, Clock, AlertTriangle, HelpCircle, 
   TrendingUp, Activity, ArrowUpRight, ArrowDownRight, 
-  Layers, UploadCloud, GitCompare, MessageSquare, RefreshCw 
+  Layers, UploadCloud, GitCompare, MessageSquare, RefreshCw,
+  ShieldCheck, Brain, CalendarCheck2, Settings
 } from 'lucide-react';
 import { 
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, 
@@ -17,7 +18,7 @@ const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'
 export function DashboardPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { showNotification } = useApp();
+  const { currentUser, showNotification } = useApp();
 
   const fetchDashboardData = async () => {
     try {
@@ -84,6 +85,149 @@ export function DashboardPage() {
             <GitCompare className="w-4 h-4 text-yellow-300" />
             Match Review ({metrics.pendingReviewEvents || 0})
           </Link>
+        </div>
+      </div>
+
+      {/* Role-Specific Executive Command Center Widget */}
+      <div className={`p-5 rounded-2xl border transition-all shadow-sm ${
+        currentUser?.role === 'SUPERVISOR'
+          ? 'bg-linear-to-r from-emerald-950 via-slate-900 to-emerald-950 border-emerald-500/40 text-white'
+          : currentUser?.role === 'PLANNER'
+          ? 'bg-linear-to-r from-blue-950 via-slate-900 to-indigo-950 border-blue-500/40 text-white'
+          : currentUser?.role === 'PROJECT_MANAGER'
+          ? 'bg-linear-to-r from-purple-950 via-slate-900 to-slate-950 border-purple-500/40 text-white'
+          : 'bg-linear-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40 text-white'
+      }`}>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
+                currentUser?.role === 'SUPERVISOR' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40' :
+                currentUser?.role === 'PLANNER' ? 'bg-blue-500/20 text-blue-300 border border-blue-400/40' :
+                currentUser?.role === 'PROJECT_MANAGER' ? 'bg-purple-500/20 text-purple-300 border border-purple-400/40' :
+                'bg-indigo-500/20 text-indigo-300 border border-indigo-400/40'
+              }`}>
+                {currentUser?.role || 'PLANNER'} ROLE WORKSPACE
+              </span>
+              <span className="text-xs text-slate-300">
+                Active: <strong>{currentUser?.name}</strong> • {currentUser?.title} ({currentUser?.department})
+              </span>
+            </div>
+
+            <h2 className="text-base md:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+              {currentUser?.role === 'SUPERVISOR' && '👷 Site Execution Command Center — Piping & Mechanical Focus'}
+              {currentUser?.role === 'PLANNER' && '📐 Lead Planning & AI Schedule Linkage Workbench'}
+              {currentUser?.role === 'PROJECT_MANAGER' && '📊 Executive PMIS & Critical Delay Command'}
+              {currentUser?.role === 'ADMIN' && '🛡️ PMO Administration & Immutable Audit Hub'}
+            </h2>
+
+            <p className="text-xs text-slate-300 mt-1 max-w-3xl leading-relaxed">
+              {currentUser?.role === 'SUPERVISOR' && 'Field Mode Active: Report daily shift outputs, capture voice notes, and log crane/weather delays. Captured events are staged for Lead Planner sign-off.'}
+              {currentUser?.role === 'PLANNER' && 'Engineering Authority Active: Review AI-extracted progress events, inspect semantic confidence scores (>80% auto-linked, 60-80% manual review), and commit actuals to Primavera schedules.'}
+              {currentUser?.role === 'PROJECT_MANAGER' && 'Executive PMIS Active: Monitor macro S-Curve slippage (-4.0% variance), inspect critical path bottlenecks, and query past institutional project solutions.'}
+              {currentUser?.role === 'ADMIN' && 'PMO Governance Active: Verify SHA-256 tamper-evident cryptographic hashes, tune AI matching confidence thresholds, and manage full-system configurations.'}
+            </p>
+          </div>
+
+          {/* Role-Specific Direct Quick Actions */}
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            {currentUser?.role === 'SUPERVISOR' && (
+              <>
+                <Link
+                  to="/time-agent"
+                  className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-2 shadow-md transition-all"
+                >
+                  <MessageSquare className="w-4 h-4 text-emerald-200" />
+                  Time Agent Voice Copilot
+                </Link>
+                <Link
+                  to="/ingestion"
+                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-2 border border-white/20 transition-all"
+                >
+                  <UploadCloud className="w-4 h-4" />
+                  Upload Site Report
+                </Link>
+                <Link
+                  to="/schedule"
+                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-2 border border-white/20 transition-all"
+                >
+                  <Layers className="w-4 h-4" />
+                  Piping & Mechanical L5
+                </Link>
+              </>
+            )}
+
+            {currentUser?.role === 'PLANNER' && (
+              <>
+                <Link
+                  to="/match-review"
+                  className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center gap-2 shadow-md transition-all"
+                >
+                  <GitCompare className="w-4 h-4 text-amber-300" />
+                  Review AI Matches ({metrics.pendingReviewEvents || 0})
+                </Link>
+                <Link
+                  to="/schedule-updates"
+                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-2 border border-white/20 transition-all"
+                >
+                  <CalendarCheck2 className="w-4 h-4" />
+                  Commit Approved Actuals
+                </Link>
+                <Link
+                  to="/schedule"
+                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-2 border border-white/20 transition-all"
+                >
+                  <Layers className="w-4 h-4" />
+                  Primavera L1-L6 View
+                </Link>
+              </>
+            )}
+
+            {currentUser?.role === 'PROJECT_MANAGER' && (
+              <>
+                <Link
+                  to="/analytics"
+                  className="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold flex items-center gap-2 shadow-md transition-all"
+                >
+                  <AlertTriangle className="w-4 h-4 text-amber-300" />
+                  Delay Analytics & SPI
+                </Link>
+                <Link
+                  to="/project-memory"
+                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-2 border border-white/20 transition-all"
+                >
+                  <Brain className="w-4 h-4 text-cyan-300" />
+                  Institutional Memory
+                </Link>
+                <Link
+                  to="/schedule-updates"
+                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-2 border border-white/20 transition-all"
+                >
+                  <CalendarCheck2 className="w-4 h-4" />
+                  Variance Ledger
+                </Link>
+              </>
+            )}
+
+            {currentUser?.role === 'ADMIN' && (
+              <>
+                <Link
+                  to="/audit"
+                  className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-2 shadow-md transition-all"
+                >
+                  <ShieldCheck className="w-4 h-4 text-emerald-300" />
+                  SHA-256 Audit Trail
+                </Link>
+                <Link
+                  to="/settings"
+                  className="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-2 border border-white/20 transition-all"
+                >
+                  <Settings className="w-4 h-4" />
+                  AI Thresholds
+                </Link>
+              </>
+            )}
+          </div>
         </div>
       </div>
 

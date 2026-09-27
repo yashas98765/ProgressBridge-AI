@@ -331,31 +331,40 @@ export function MatchReviewPage() {
                 {/* Right: Actions */}
                 <div className="flex flex-row lg:flex-col gap-2 shrink-0 justify-end">
                   {item.review_status === 'PENDING' ? (
-                    <>
-                      <button
-                        onClick={() => handleApprove(item._id)}
-                        className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm cursor-pointer transition-colors"
-                      >
-                        <Check className="w-3.5 h-3.5" /> Approve Match
-                      </button>
+                    currentUser?.role === 'SUPERVISOR' ? (
+                      <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-xl text-center text-xs text-amber-900 max-w-[200px]">
+                        <span className="font-bold text-[11px] block">Field Supervisor Persona</span>
+                        <span className="text-[10px] text-amber-700 block mt-0.5">
+                          Read-only: Planner approval required to link to baseline schedule
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => handleApprove(item._id)}
+                          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm cursor-pointer transition-colors"
+                        >
+                          <Check className="w-3.5 h-3.5" /> Approve Match
+                        </button>
 
-                      <button
-                        onClick={() => handleReject(item._id)}
-                        className="px-4 py-2 bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
-                      >
-                        <X className="w-3.5 h-3.5" /> Reject
-                      </button>
+                        <button
+                          onClick={() => handleReject(item._id)}
+                          className="px-4 py-2 bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                        >
+                          <X className="w-3.5 h-3.5" /> Reject
+                        </button>
 
-                      <button
-                        onClick={() => {
-                          setChangeModalMatch(item);
-                          setSelectedNewActivityId(item.activity_id);
-                        }}
-                        className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
-                      >
-                        Change Match
-                      </button>
-                    </>
+                        <button
+                          onClick={() => {
+                            setChangeModalMatch(item);
+                            setSelectedNewActivityId(item.activity_id);
+                          }}
+                          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+                        >
+                          Change Match
+                        </button>
+                      </>
+                    )
                   ) : (
                     <div className="text-right">
                       <span className="px-3 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-600 inline-block">
